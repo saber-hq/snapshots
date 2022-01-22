@@ -1,0 +1,33 @@
+anchor_version = "0.20.1"
+solana_version = "1.8.11"
+
+[scripts]
+test = "yarn mocha"
+
+[provider]
+cluster = "localnet"
+wallet = "./tests/test-key.json"
+
+[[test.genesis]]
+address = "Govz1VyoyLD5BL6CSCxUJLVLsQHRwjfFj1prNsdNg5Jw"
+program = "./artifacts/deploy/govern.so"
+
+[[test.genesis]]
+address = "LocktDzaV1W2Bm9DeZeiyz4J9zs4fRqNiYqQyracRXw"
+program = "./artifacts/deploy/locked_voter.so"
+
+[[test.genesis]]
+address = "GokivDYuQXPZCWRkwMhdH2h91KpDQXBEmpgBgs55bnpH"
+program = "./artifacts/deploy/smart_wallet.so"
+
+[programs.localnet]
+snapshots = "StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK"
+
+[programs.devnet]
+snapshots = "StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK"
+
+[programs.testnet]
+snapshots = "StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK"
+
+[programs.mainnet]
+snapshots = "StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK"

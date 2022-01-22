@@ -1,0 +1,78 @@
+//! Voting Escrow Snapshots: Historical snapshots of previous voting escrow balances.
+//!
+//! # Motivation
+//!
+//! There are several instances in which one may want to use an instantaneous snapshot of all vote escrow balances, for example:
+//!
+//! - **Fee distribution.** One may want to send protocol revenue to veToken holders.
+//! - **Airdrops.** One may want to send tokens to holders of a veToken.
+//!
+//! # Mechanism
+//!
+//! veToken balances are recorded for every `period`. A period is recorded for every 3 days.
+//!
+//! There are two accounts that are used to compute historical balances:
+//!
+//! - [LockerHistory], which stores the total number of veTokens for each period, and
+//! - [EscrowHistory], which stores the veTokens in each Escrow per period.
+//!
+//! Any time someone refreshes and/or modifies their vote escrow, they should refresh their [EscrowHistory] accounts.
+//!
+//! # License
+//!
+//! The [snapshots] program is licensed under the Affero General Public License version 3.
+
+#![deny(rustdoc::all)]
+#![allow(rustdoc::missing_doc_code_examples)]
+#![deny(clippy::unwrap_used)]
+
+use anchor_lang::prelude::*;
+use vipers::Validate;
+
+mod instructions;
+mod state;
+
+pub use state::*;
+
+use instructions::*;
+
+declare_id!("StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK");
+
+/// The [snapshots] program.
+#[program]
+pub mod snapshots {
+    use super::*;
+
+    /// Creates a [EscrowHistory].
+    #[access_control(ctx.accounts.validate())]
+    pub fn create_escrow_history(
+        ctx: Context<CreateEscrowHistory>,
+        bump: u8,
+        era: u16,
+    ) -> ProgramResult {
+        create_escrow_history::handler(ctx, bump, era)
+    }
+
+    /// Creates a [LockerHistory].
+    #[access_control(ctx.accounts.validate())]
+    pub fn create_locker_history(
+        ctx: Context<CreateLockerHistory>,
+        bump: u8,
+        era: u16,
+    ) -> ProgramResult {
+        create_locker_history::handler(ctx, bump, era)
+    }
+
+    /// Synchronize an [locked_voter::Escrow] with the [LockerHistory]/[EscrowHistory].
+    #[access_control(ctx.accounts.validate())]
+    pub fn sync(ctx: Context<Sync>) -> ProgramResult {
+        sync::handler(ctx)
+    }
+}
+
+/// Errors.
+#[error]
+pub enum ErrorCode {
+    #[msg("Locker/escrow mismatch.")]
+    LockerEscrowMismatch,
+}

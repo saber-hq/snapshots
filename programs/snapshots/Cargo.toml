@@ -1,0 +1,28 @@
+[package]
+name = "snapshots"
+version = "0.1.0"
+description = "Voting Escrow Snapshots: Historical snapshots of previous voting escrow balances."
+edition = "2021"
+homepage = "https://saber.so"
+repository = "https://github.com/saber-hq/snapshots"
+authors = ["Ian Macalinao <ian@ship.capital>"]
+license = "AGPL-3.0"
+keywords = ["solana", "anchor", "governance", "saber", "tribeca"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "snapshots"
+path = "src/lib.rs"
+
+[features]
+no-entrypoint = []
+no-idl = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = ">=0.17"
+anchor-spl = ">=0.17"
+locked-voter = { version = "^0.3", features = ["cpi"] }
+num-traits = "0.2"
+vipers = "1.5.7"
