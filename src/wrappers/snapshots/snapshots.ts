@@ -10,7 +10,6 @@ import type {
 } from "../../programs/snapshots";
 import type { SnapshotsSDK } from "../../sdk";
 import { findEscrowHistoryAddress, findLockerHistoryAddress } from ".";
-import { decodeEscrowHistory, decodeLockerHistory } from "./parsers";
 
 /**
  * Handles interacting with the Snapshots program.
@@ -31,19 +30,11 @@ export class SnapshotsWrapper {
   }
 
   async fetchLockerHistory(key: PublicKey): Promise<LockerHistoryData | null> {
-    const data = await this.provider.connection.getAccountInfo(key);
-    if (!data) {
-      return null;
-    }
-    return decodeLockerHistory(data.data);
+    return await this.program.account.lockerHistory.fetchNullable(key);
   }
 
   async fetchEscrowHistory(key: PublicKey): Promise<EscrowHistoryData | null> {
-    const data = await this.provider.connection.getAccountInfo(key);
-    if (!data) {
-      return null;
-    }
-    return decodeEscrowHistory(data.data);
+    return await this.program.account.escrowHistory.fetchNullable(key);
   }
 
   /**

@@ -40,6 +40,8 @@ pub struct LockerHistory {
     pub era: u16,
     /// Bump seed.
     pub bump: u8,
+    /// Padding for aligning the struct to an 8-byte boundary.
+    pub _padding: [u8; 5],
     /// The sum of all tracked historical vote escrow balances.
     pub ve_balances: [u64; 256],
     /// Number of voters with non-zero balances at each epoch.
@@ -52,6 +54,7 @@ impl Default for LockerHistory {
             locker: Default::default(),
             era: Default::default(),
             bump: Default::default(),
+            _padding: Default::default(),
             ve_balances: [0; ERA_NUM_PERIODS],
             ve_counts: [0; ERA_NUM_PERIODS],
         }
@@ -72,6 +75,8 @@ pub struct EscrowHistory {
     pub era: u16,
     /// Bump seed.
     pub bump: u8,
+    /// Padding for aligning the struct to an 8-byte boundary.
+    pub _padding: [u8; 5],
     /// All tracked historical vote escrow balances for this [locked_voter::Escrow].
     pub ve_balances: [u64; 256],
 }
@@ -82,6 +87,7 @@ impl Default for EscrowHistory {
             escrow: Default::default(),
             era: Default::default(),
             bump: Default::default(),
+            _padding: Default::default(),
             ve_balances: [0; ERA_NUM_PERIODS],
         }
     }
