@@ -3,7 +3,7 @@
 use anchor_lang::prelude::*;
 use locked_voter::{Escrow, Locker};
 use num_traits::ToPrimitive;
-use vipers::{assert_keys_eq, unwrap_int};
+use vipers::{assert_keys_eq, invariant, unwrap_int};
 
 use crate::*;
 
@@ -29,6 +29,10 @@ impl<'info> Sync<'info> {
     fn sync(&self) -> ProgramResult {
         let locker_history = &mut self.locker_history.load_mut()?;
         let escrow_history = &mut self.escrow_history.load_mut()?;
+
+        assert_keys_eq!(locker_history.locker, self.locker);
+        assert_keys_eq!(escrow_history.escrow, self.escrow);
+        invariant!(locker_history.era == escrow_history.era, EraMismatch);
 
         let start_ts = unwrap_int!(calculate_era_start_ts(locker_history.era));
         let now = Clock::get()?.unix_timestamp;

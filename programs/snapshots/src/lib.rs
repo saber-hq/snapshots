@@ -75,4 +75,6 @@ pub mod snapshots {
 pub enum ErrorCode {
     #[msg("Locker/escrow mismatch.")]
     LockerEscrowMismatch,
+    #[msg("Era mismatch.")]
+    EraMismatch,
 }
