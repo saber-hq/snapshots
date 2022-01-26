@@ -26,10 +26,10 @@ pub fn calculate_period_start_ts(era: u16, period: u8) -> Option<u64> {
         .checked_add(period.to_u64()?.checked_mul(PERIOD_SECONDS.to_u64()?)?)
 }
 
-/// Stores the total number of veTokens for each Solana rent epoch.
+/// Stores the total number of veTokens in circulation for each period.
 ///
-/// The [LockerHistory] account stores 1 year worth of epochs.
-/// For a 5-year [locked_voter::Locker], there will be at least 6 of these accounts existing
+/// The [LockerHistory] account stores 256 periods, each 3 days each.
+/// For a 5-year [locked_voter::Locker], there will be at least 3 of these accounts existing
 /// at any given time, since the maximum lock period is 5 years.
 #[account(zero_copy)]
 #[derive(Debug)]
