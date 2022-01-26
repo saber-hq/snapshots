@@ -62,16 +62,13 @@ impl<'info> Sync<'info> {
                 .and_then(|v| v.checked_add(ve_balance)));
             escrow_history.ve_balances[period] = ve_balance;
 
-            // If the previous balance was zero, this is a newly tracked.
+            invariant!(prev_period_ve_balance >= ve_balance, EscrowBalanceDecreased);
+
+            // If the previous balance was zero, this is a newly tracked escrow.
             // This voter should be recorded in the counts.
             if prev_period_ve_balance == 0 && ve_balance != 0 {
                 locker_history.ve_counts[period] =
                     unwrap_int!(locker_history.ve_counts[period].checked_add(1));
-            } else if prev_period_ve_balance != 0 && ve_balance == 0 {
-                // If the previous balance was non-zero but the new balance is zero,
-                // locker parameters have changed.
-                locker_history.ve_counts[period] =
-                    unwrap_int!(locker_history.ve_counts[period].checked_sub(1));
             }
         }
 
