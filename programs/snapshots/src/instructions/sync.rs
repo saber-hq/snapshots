@@ -62,7 +62,7 @@ impl<'info> Sync<'info> {
                 .and_then(|v| v.checked_add(ve_balance)));
             escrow_history.ve_balances[period] = ve_balance;
 
-            invariant!(prev_period_ve_balance >= ve_balance, EscrowBalanceDecreased);
+            invariant!(ve_balance >= prev_period_ve_balance, EscrowBalanceDecreased);
 
             // If the previous balance was zero, this is a newly tracked escrow.
             // This voter should be recorded in the counts.
