@@ -77,4 +77,6 @@ pub enum ErrorCode {
     LockerEscrowMismatch,
     #[msg("Era mismatch.")]
     EraMismatch,
+    #[msg("Escrow balances cannot decrease.")]
+    EscrowBalanceDecreased,
 }
