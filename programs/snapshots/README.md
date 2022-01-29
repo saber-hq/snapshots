@@ -31,6 +31,10 @@ There are two accounts that are used to compute historical balances:
 
 Any time someone refreshes and/or modifies their vote escrow, they should refresh their [EscrowHistory] accounts.
 
+## Program Addresses
+
+- **[snapshots]:** [StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK](https://anchor.so/programs/StakeSSzfxn391k3LvdKbZP5WVwWd6AsY1DNiXHjQfK)
+
 ## License
 
 The [snapshots] program is licensed under the Affero General Public License version 3.
