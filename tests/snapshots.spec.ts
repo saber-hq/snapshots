@@ -114,6 +114,55 @@ describe("Locked Voter", () => {
     );
   });
 
+  it("sync multiple times should have no effect", async () => {
+    const syncTX1 = await sdk.snapshots.sync({
+      locker: lockerW.locker,
+      owner: user.publicKey,
+      era: 0,
+    });
+    await expectTXTable(syncTX1, "sync").to.be.fulfilled;
+
+    const [escrowKey] = await findEscrowAddress(lockerW.locker, user.publicKey);
+
+    const [lockerHistory] = await findLockerHistoryAddress(lockerW.locker, 0);
+    const [escrowHistory] = await findEscrowHistoryAddress(escrowKey, 0);
+
+    const lockerHistoryData1 = await sdk.snapshots.fetchLockerHistory(
+      lockerHistory
+    );
+    const escrowHistoryData1 = await sdk.snapshots.fetchEscrowHistory(
+      escrowHistory
+    );
+
+    const syncTX2 = await sdk.snapshots.sync({
+      locker: lockerW.locker,
+      owner: user.publicKey,
+      era: 0,
+    });
+    await expectTXTable(syncTX2, "sync again").to.be.fulfilled;
+
+    const lockerHistoryData2 = await sdk.snapshots.fetchLockerHistory(
+      lockerHistory
+    );
+    const escrowHistoryData2 = await sdk.snapshots.fetchEscrowHistory(
+      escrowHistory
+    );
+
+    invariant(
+      lockerHistoryData1 &&
+        escrowHistoryData1 &&
+        lockerHistoryData2 &&
+        escrowHistoryData2
+    );
+
+    expect(lockerHistoryData1.veBalances).to.deep.eq(
+      lockerHistoryData2.veBalances
+    );
+    expect(escrowHistoryData1.veBalances).to.deep.eq(
+      escrowHistoryData2.veBalances
+    );
+  });
+
   it("syncs multiple escrows", async () => {
     const [lockerHistory] = await findLockerHistoryAddress(lockerW.locker, 0);
     const initialLockerHistoryData = await sdk.snapshots.fetchLockerHistory(
