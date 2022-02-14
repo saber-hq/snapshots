@@ -20,7 +20,7 @@ pub struct CreateLockerHistory<'info> {
             locker.key().as_ref(),
             era.to_le_bytes().as_ref()
         ],
-        bump = bump,
+        bump,
         payer = payer
     )]
     pub locker_history: AccountLoader<'info, LockerHistory>,
@@ -43,8 +43,9 @@ impl<'info> CreateLockerHistory<'info> {
     }
 }
 
-pub fn handler(ctx: Context<CreateLockerHistory>, bump: u8, era: u16) -> ProgramResult {
-    ctx.accounts.create_locker_history(bump, era)
+pub fn handler(ctx: Context<CreateLockerHistory>, era: u16) -> ProgramResult {
+    ctx.accounts
+        .create_locker_history(*unwrap_int!(ctx.bumps.get("locker_history")), era)
 }
 
 impl<'info> Validate<'info> for CreateLockerHistory<'info> {

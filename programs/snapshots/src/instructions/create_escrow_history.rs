@@ -20,7 +20,7 @@ pub struct CreateEscrowHistory<'info> {
             escrow.key().as_ref(),
             era.to_le_bytes().as_ref()
         ],
-        bump = bump,
+        bump,
         payer = payer
     )]
     pub escrow_history: AccountLoader<'info, EscrowHistory>,
@@ -43,8 +43,9 @@ impl<'info> CreateEscrowHistory<'info> {
     }
 }
 
-pub fn handler(ctx: Context<CreateEscrowHistory>, bump: u8, era: u16) -> ProgramResult {
-    ctx.accounts.create_escrow_history(bump, era)?;
+pub fn handler(ctx: Context<CreateEscrowHistory>, era: u16) -> ProgramResult {
+    ctx.accounts
+        .create_escrow_history(*unwrap_int!(ctx.bumps.get("escrow_history")), era)?;
     Ok(())
 }
 
