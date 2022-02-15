@@ -42,7 +42,7 @@
     "@saberhq/token-utils": "^1.12.36",
     "@saberhq/tsconfig": "^1.12.36",
     "@solana/web3.js": "^1.32.0",
-    "@tribecahq/tribeca-sdk": "^0.3.1",
+    "@tribecahq/tribeca-sdk": "^0.4.0",
     "@types/bn.js": "^5.1.0",
     "@types/chai": "^4.3.0",
     "@types/lodash": "^4.14.178",
@@ -71,7 +71,7 @@
     "@saberhq/solana-contrib": "^1.12",
     "@saberhq/token-utils": "^1.12",
     "@solana/web3.js": "^1.29.2",
-    "@tribecahq/tribeca-sdk": "^0.3.1",
+    "@tribecahq/tribeca-sdk": "^0.4.0",
     "bn.js": "^5.2.0"
   },
   "resolutions": {
