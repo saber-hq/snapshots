@@ -7,7 +7,7 @@ use crate::*;
 
 /// Accounts for [snapshots::create_escrow_history].
 #[derive(Accounts)]
-#[instruction(bump: u8, era: u16)]
+#[instruction(era: u16)]
 pub struct CreateEscrowHistory<'info> {
     /// The [Escrow].
     pub escrow: Account<'info, Escrow>,

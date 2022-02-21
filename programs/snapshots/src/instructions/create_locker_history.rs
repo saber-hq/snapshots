@@ -7,7 +7,7 @@ use crate::*;
 
 /// Accounts for [snapshots::create_locker_history].
 #[derive(Accounts)]
-#[instruction(bump: u8, era: u16)]
+#[instruction(era: u16)]
 pub struct CreateLockerHistory<'info> {
     /// The [Locker].
     pub locker: Account<'info, Locker>,
