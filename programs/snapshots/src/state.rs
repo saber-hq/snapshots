@@ -32,7 +32,7 @@ pub fn calculate_period_start_ts(era: u16, period: u8) -> Option<u64> {
 /// For a 5-year [locked_voter::Locker], there will be at least 3 of these accounts existing
 /// at any given time, since the maximum lock period is 5 years.
 #[account(zero_copy)]
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct LockerHistory {
     /// The [locked_voter::Locker] being tracked.
     pub locker: Pubkey,
@@ -67,7 +67,7 @@ impl Default for LockerHistory {
 /// Any time someone refreshes and/or modifies their vote [locked_voter::Escrow], they
 /// should refresh their [EscrowHistory] accounts.
 #[account(zero_copy)]
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct EscrowHistory {
     /// The [locked_voter::Escrow] being tracked.
     pub escrow: Pubkey,

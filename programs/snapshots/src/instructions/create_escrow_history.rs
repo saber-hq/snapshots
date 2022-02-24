@@ -1,9 +1,7 @@
 //! Processor for [snapshots::create_escrow_history].
 
-use anchor_lang::prelude::*;
-use locked_voter::Escrow;
-
 use crate::*;
+use locked_voter::Escrow;
 
 /// Accounts for [snapshots::create_escrow_history].
 #[derive(Accounts)]
@@ -34,7 +32,7 @@ pub struct CreateEscrowHistory<'info> {
 }
 
 impl<'info> CreateEscrowHistory<'info> {
-    fn create_escrow_history(&mut self, bump: u8, era: u16) -> ProgramResult {
+    fn create_escrow_history(&mut self, bump: u8, era: u16) -> Result<()> {
         let history = &mut self.escrow_history.load_init()?;
         history.escrow = self.escrow.key();
         history.era = era;
@@ -43,14 +41,14 @@ impl<'info> CreateEscrowHistory<'info> {
     }
 }
 
-pub fn handler(ctx: Context<CreateEscrowHistory>, era: u16) -> ProgramResult {
+pub fn handler(ctx: Context<CreateEscrowHistory>, era: u16) -> Result<()> {
     ctx.accounts
         .create_escrow_history(*unwrap_int!(ctx.bumps.get("escrow_history")), era)?;
     Ok(())
 }
 
 impl<'info> Validate<'info> for CreateEscrowHistory<'info> {
-    fn validate(&self) -> ProgramResult {
+    fn validate(&self) -> Result<()> {
         Ok(())
     }
 }

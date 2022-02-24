@@ -1,11 +1,8 @@
 //! Processor for [snapshots::sync].
 
-use anchor_lang::prelude::*;
+use crate::*;
 use locked_voter::{Escrow, Locker};
 use num_traits::ToPrimitive;
-use vipers::{assert_keys_eq, invariant, unwrap_int};
-
-use crate::*;
 
 /// Accounts for [snapshots::sync].
 #[derive(Accounts)]
@@ -26,7 +23,7 @@ pub struct Sync<'info> {
 }
 
 impl<'info> Sync<'info> {
-    fn sync(&self) -> ProgramResult {
+    fn sync(&self) -> Result<()> {
         let locker_history = &mut self.locker_history.load_mut()?;
         let escrow_history = &mut self.escrow_history.load_mut()?;
 
@@ -76,12 +73,12 @@ impl<'info> Sync<'info> {
     }
 }
 
-pub fn handler(ctx: Context<Sync>) -> ProgramResult {
+pub fn handler(ctx: Context<Sync>) -> Result<()> {
     ctx.accounts.sync()
 }
 
 impl<'info> Validate<'info> for Sync<'info> {
-    fn validate(&self) -> ProgramResult {
+    fn validate(&self) -> Result<()> {
         assert_keys_eq!(self.locker, self.escrow.locker);
         Ok(())
     }

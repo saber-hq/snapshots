@@ -21,8 +21,8 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = "^0.21"
-anchor-spl = "^0.21"
-locked-voter = { version = "^0.4", features = ["cpi"] }
+anchor-lang = "^0.22"
+anchor-spl = "^0.22"
+locked-voter = { version = "^0.5", features = ["cpi"] }
 num-traits = "0.2"
-vipers = "^1.6"
+vipers = "^2.0"
