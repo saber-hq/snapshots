@@ -31,7 +31,7 @@
 #![deny(clippy::unwrap_used)]
 
 use anchor_lang::prelude::*;
-use vipers::Validate;
+use vipers::prelude::*;
 
 mod instructions;
 mod state;
@@ -49,33 +49,25 @@ pub mod snapshots {
 
     /// Creates a [EscrowHistory].
     #[access_control(ctx.accounts.validate())]
-    pub fn create_escrow_history(
-        ctx: Context<CreateEscrowHistory>,
-        bump: u8,
-        era: u16,
-    ) -> ProgramResult {
-        create_escrow_history::handler(ctx, bump, era)
+    pub fn create_escrow_history(ctx: Context<CreateEscrowHistory>, era: u16) -> Result<()> {
+        create_escrow_history::handler(ctx, era)
     }
 
     /// Creates a [LockerHistory].
     #[access_control(ctx.accounts.validate())]
-    pub fn create_locker_history(
-        ctx: Context<CreateLockerHistory>,
-        bump: u8,
-        era: u16,
-    ) -> ProgramResult {
-        create_locker_history::handler(ctx, bump, era)
+    pub fn create_locker_history(ctx: Context<CreateLockerHistory>, era: u16) -> Result<()> {
+        create_locker_history::handler(ctx, era)
     }
 
     /// Synchronize an [locked_voter::Escrow] with the [LockerHistory]/[EscrowHistory].
     #[access_control(ctx.accounts.validate())]
-    pub fn sync(ctx: Context<Sync>) -> ProgramResult {
+    pub fn sync(ctx: Context<Sync>) -> Result<()> {
         sync::handler(ctx)
     }
 }
 
 /// Errors.
-#[error]
+#[error_code]
 pub enum ErrorCode {
     #[msg("Locker/escrow mismatch.")]
     LockerEscrowMismatch,

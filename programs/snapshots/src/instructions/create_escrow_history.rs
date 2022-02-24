@@ -1,13 +1,11 @@
 //! Processor for [snapshots::create_escrow_history].
 
-use anchor_lang::prelude::*;
-use locked_voter::Escrow;
-
 use crate::*;
+use locked_voter::Escrow;
 
 /// Accounts for [snapshots::create_escrow_history].
 #[derive(Accounts)]
-#[instruction(bump: u8, era: u16)]
+#[instruction(era: u16)]
 pub struct CreateEscrowHistory<'info> {
     /// The [Escrow].
     pub escrow: Account<'info, Escrow>,
@@ -20,7 +18,7 @@ pub struct CreateEscrowHistory<'info> {
             escrow.key().as_ref(),
             era.to_le_bytes().as_ref()
         ],
-        bump = bump,
+        bump,
         payer = payer
     )]
     pub escrow_history: AccountLoader<'info, EscrowHistory>,
@@ -34,7 +32,7 @@ pub struct CreateEscrowHistory<'info> {
 }
 
 impl<'info> CreateEscrowHistory<'info> {
-    fn create_escrow_history(&mut self, bump: u8, era: u16) -> ProgramResult {
+    fn create_escrow_history(&mut self, bump: u8, era: u16) -> Result<()> {
         let history = &mut self.escrow_history.load_init()?;
         history.escrow = self.escrow.key();
         history.era = era;
@@ -43,13 +41,14 @@ impl<'info> CreateEscrowHistory<'info> {
     }
 }
 
-pub fn handler(ctx: Context<CreateEscrowHistory>, bump: u8, era: u16) -> ProgramResult {
-    ctx.accounts.create_escrow_history(bump, era)?;
+pub fn handler(ctx: Context<CreateEscrowHistory>, era: u16) -> Result<()> {
+    ctx.accounts
+        .create_escrow_history(*unwrap_int!(ctx.bumps.get("escrow_history")), era)?;
     Ok(())
 }
 
 impl<'info> Validate<'info> for CreateEscrowHistory<'info> {
-    fn validate(&self) -> ProgramResult {
+    fn validate(&self) -> Result<()> {
         Ok(())
     }
 }

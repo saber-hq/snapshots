@@ -1,13 +1,11 @@
 //! Processor for [snapshots::create_locker_history].
 
-use anchor_lang::prelude::*;
-use locked_voter::Locker;
-
 use crate::*;
+use locked_voter::Locker;
 
 /// Accounts for [snapshots::create_locker_history].
 #[derive(Accounts)]
-#[instruction(bump: u8, era: u16)]
+#[instruction(era: u16)]
 pub struct CreateLockerHistory<'info> {
     /// The [Locker].
     pub locker: Account<'info, Locker>,
@@ -20,7 +18,7 @@ pub struct CreateLockerHistory<'info> {
             locker.key().as_ref(),
             era.to_le_bytes().as_ref()
         ],
-        bump = bump,
+        bump,
         payer = payer
     )]
     pub locker_history: AccountLoader<'info, LockerHistory>,
@@ -34,7 +32,7 @@ pub struct CreateLockerHistory<'info> {
 }
 
 impl<'info> CreateLockerHistory<'info> {
-    fn create_locker_history(&mut self, bump: u8, era: u16) -> ProgramResult {
+    fn create_locker_history(&mut self, bump: u8, era: u16) -> Result<()> {
         let history = &mut self.locker_history.load_init()?;
         history.locker = self.locker.key();
         history.era = era;
@@ -43,12 +41,13 @@ impl<'info> CreateLockerHistory<'info> {
     }
 }
 
-pub fn handler(ctx: Context<CreateLockerHistory>, bump: u8, era: u16) -> ProgramResult {
-    ctx.accounts.create_locker_history(bump, era)
+pub fn handler(ctx: Context<CreateLockerHistory>, era: u16) -> Result<()> {
+    ctx.accounts
+        .create_locker_history(*unwrap_int!(ctx.bumps.get("locker_history")), era)
 }
 
 impl<'info> Validate<'info> for CreateLockerHistory<'info> {
-    fn validate(&self) -> ProgramResult {
+    fn validate(&self) -> Result<()> {
         Ok(())
     }
 }
