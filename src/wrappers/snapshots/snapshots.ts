@@ -48,11 +48,11 @@ export class SnapshotsWrapper {
     locker: PublicKey;
     era: number;
   }): Promise<{ lockerHistory: PublicKey; tx: TransactionEnvelope }> {
-    const [lockerHistory, bump] = await findLockerHistoryAddress(locker, era);
+    const [lockerHistory] = await findLockerHistoryAddress(locker, era);
     return {
       lockerHistory,
       tx: this.provider.newTX([
-        this.program.instruction.createLockerHistory(bump, era, {
+        this.program.instruction.createLockerHistory(era, {
           accounts: {
             locker,
             lockerHistory,
@@ -75,11 +75,11 @@ export class SnapshotsWrapper {
     escrow: PublicKey;
     era: number;
   }): Promise<{ escrowHistory: PublicKey; tx: TransactionEnvelope }> {
-    const [escrowHistory, bump] = await findEscrowHistoryAddress(escrow, era);
+    const [escrowHistory] = await findEscrowHistoryAddress(escrow, era);
     return {
       escrowHistory,
       tx: this.provider.newTX([
-        this.program.instruction.createEscrowHistory(bump, era, {
+        this.program.instruction.createEscrowHistory(era, {
           accounts: {
             escrow,
             escrowHistory,
