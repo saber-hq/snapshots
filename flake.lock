@@ -113,11 +113,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1646530901,
-        "narHash": "sha256-r3zD0m9ScMeCiKb/WVYBS9AcSh8muls4F9bBvIsyqyo=",
+        "lastModified": 1646535524,
+        "narHash": "sha256-XhSGOpXqqe0s/KKCBZW7kJFkAPGrvb2jLNRN48LuZrI=",
         "owner": "saber-hq",
         "repo": "saber-overlay",
-        "rev": "4d851acea6a1b7e625880764e5ae6cb30c4838ab",
+        "rev": "bd42c8b590cc15a9dc276699d261f43010996b12",
         "type": "github"
       },
       "original": {
