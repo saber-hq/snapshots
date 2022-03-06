@@ -1,5 +1,5 @@
 [workspace]
-members = ["programs/*"]
+members = ["programs/*", "programs/snapshots/math"]
 
 [profile.release]
 lto = "fat"

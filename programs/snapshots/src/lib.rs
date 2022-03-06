@@ -36,6 +36,7 @@ use vipers::prelude::*;
 mod instructions;
 mod state;
 
+pub use snapshots_math::*;
 pub use state::*;
 
 use instructions::*;

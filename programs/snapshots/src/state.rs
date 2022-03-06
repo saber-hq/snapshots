@@ -1,30 +1,6 @@
 //! Struct definitions for accounts that hold state.
 
 use crate::*;
-use num_traits::cast::ToPrimitive;
-
-/// Number of periods in an era.
-pub const ERA_NUM_PERIODS: usize = (u8::MAX as usize) + 1;
-
-/// Number of seconds in a period.
-pub const PERIOD_SECONDS: u32 = 86_400 * 3;
-
-/// Number of seconds in an era.
-pub const SECONDS_PER_ERA: u64 = (ERA_NUM_PERIODS as u64) * (PERIOD_SECONDS as u64);
-
-/// The Unix timestamp of the start of the first era.
-pub const COMMON_ERA_UNIX_TS: u64 = 1640995200;
-
-/// Calculates the start timestamp of an era.
-pub fn calculate_era_start_ts(era: u16) -> Option<u64> {
-    COMMON_ERA_UNIX_TS.checked_add(SECONDS_PER_ERA.checked_mul(era.into())?)
-}
-
-/// Calculates the start timestamp of a period of an era.
-pub fn calculate_period_start_ts(era: u16, period: u8) -> Option<u64> {
-    calculate_era_start_ts(era)?
-        .checked_add(period.to_u64()?.checked_mul(PERIOD_SECONDS.to_u64()?)?)
-}
 
 /// Stores the total number of veTokens in circulation for each period.
 ///

@@ -1048,7 +1048,15 @@ dependencies = [
  "anchor-spl",
  "locked-voter",
  "num-traits",
+ "snapshots-math",
  "vipers",
+]
+
+[[package]]
+name = "snapshots-math"
+version = "0.2.0"
+dependencies = [
+ "num-traits",
 ]
 
 [[package]]

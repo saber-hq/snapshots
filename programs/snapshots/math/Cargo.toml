@@ -1,0 +1,18 @@
+[package]
+name = "snapshots-math"
+version = "0.2.0"
+description = "Calculations for voting escrow snapshots."
+edition = "2021"
+homepage = "https://saber.so"
+repository = "https://github.com/saber-hq/snapshots"
+authors = ["Ian Macalinao <ian@ship.capital>"]
+license = "AGPL-3.0"
+keywords = ["solana", "anchor", "governance", "saber", "tribeca"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "snapshots_math"
+path = "src/lib.rs"
+
+[dependencies]
+num-traits = "0.2"

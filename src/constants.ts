@@ -33,10 +33,16 @@ export const SNAPSHOTS_CODERS = buildCoderMap<{
 }>(SNAPSHOTS_IDLS, SNAPSHOTS_ADDRESSES);
 
 /**
- * Default epoch duration (seconds) -- 7 days
+ * Number of periods in an era.
  */
-export const DEFAULT_EPOCH_DURATION_SECONDS = 60 * 60 * 24 * 7;
-
 export const ERA_NUM_PERIODS = 256;
+
+/**
+ * Number of seconds in a period.
+ */
 export const PERIOD_SECONDS = 86_400 * 3;
+
+/**
+ * The Unix timestamp of the start of the first era.
+ */
 export const COMMON_ERA_UNIX_TS = 1640995200;
