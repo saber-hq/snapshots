@@ -100,7 +100,7 @@ jobs:
         run: |
           echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
           export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
-          solana --version
+          cargo-build-bpf --version
 
       # Run build
       - name: Build program
