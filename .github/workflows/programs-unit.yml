@@ -18,7 +18,7 @@ on:
 
 defaults:
   run:
-    shell: nix shell .#rust --command {0}
+    shell: nix shell .#rust --command bash {0}
 
 env:
   CARGO_TERM_COLOR: always

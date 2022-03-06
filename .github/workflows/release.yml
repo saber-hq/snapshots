@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-idls --command {0}
+        shell: nix shell .#env-anchor-idls --command bash {0}
 
     name: Release SDK on NPM
     steps:
@@ -60,7 +60,7 @@ jobs:
     name: Release crate on crates.io
     defaults:
       run:
-        shell: nix shell .#env-release-crates --command {0}
+        shell: nix shell .#env-release-crates --command bash {0}
 
     steps:
       - uses: actions/checkout@v3
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-build --command {0}
+        shell: nix shell .#env-anchor-build --command bash {0}
 
     name: Release verifiable binaries
     steps:
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-idls --command {0}
+        shell: nix shell .#env-anchor-idls --command bash {0}
 
     steps:
       - name: Checkout
