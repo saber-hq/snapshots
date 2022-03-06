@@ -3,8 +3,8 @@ pkgs.buildEnv {
   name = "ci";
   paths = with pkgs;
     with saber-pkgs;
-    (pkgs.lib.optionals pkgs.stdenv.isLinux ([ libudev ])) ++ [
-      anchor-0_20_1
+    (pkgs.lib.optionals pkgs.stdenv.isLinux ([ udev ])) ++ [
+      anchor-0_22_0
       cargo-workspaces
       solana-basic
 
