@@ -17,7 +17,7 @@ jobs:
     name: Build the SDK
     defaults:
       run:
-        shell: nix shell .#env-anchor-idls
+        shell: nix shell .#env-anchor-idls --command {0}
 
     steps:
       - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-build
+        shell: nix shell .#env-anchor-build --command {0}
 
     steps:
       - uses: actions/checkout@v3

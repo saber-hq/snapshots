@@ -14,6 +14,10 @@ env:
 jobs:
   release-sdk:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix shell .#env-anchor-idls --command {0}
+
     name: Release SDK on NPM
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +48,7 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn install
       - name: Parse IDLs
-        run: nix shell .#env-anchor-idls --command yarn idl:generate
+        run: yarn idl:generate
       - run: yarn build
       - run: |
           echo 'npmAuthToken: "${NPM_AUTH_TOKEN}"' >> .yarnrc.yml
@@ -54,6 +58,10 @@ jobs:
   release-crate:
     runs-on: ubuntu-latest
     name: Release crate on crates.io
+    defaults:
+      run:
+        shell: nix shell .#env-release-crates --command {0}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -64,21 +72,15 @@ jobs:
           name: saber
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Install Rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
       - uses: Swatinem/rust-cache@v1
       - name: Publish crates
-        run: nix shell .#ci --command cargo-ws workspaces publish --from-git --yes --skip-published --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
+        run: cargo workspaces publish --from-git --yes --skip-published --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
 
   release-binaries:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-build
+        shell: nix shell .#env-anchor-build --command {0}
 
     name: Release verifiable binaries
     steps:
@@ -104,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: nix shell .#env-anchor-idls
+        shell: nix shell .#env-anchor-idls --command {0}
 
     steps:
       - name: Checkout
