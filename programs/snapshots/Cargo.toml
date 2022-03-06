@@ -1,6 +1,6 @@
 [package]
 name = "snapshots"
-version = "0.2.0"
+version = "0.2.1"
 description = "Voting Escrow Snapshots: Historical snapshots of previous voting escrow balances."
 edition = "2021"
 homepage = "https://saber.so"

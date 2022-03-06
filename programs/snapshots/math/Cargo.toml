@@ -1,6 +1,6 @@
 [package]
 name = "snapshots-math"
-version = "0.2.0"
+version = "0.2.1"
 description = "Calculations for voting escrow snapshots."
 edition = "2021"
 homepage = "https://saber.so"
