@@ -80,6 +80,7 @@ jobs:
       - name: Install Rustup
         uses: actions-rs/toolchain@v1
         with:
+          toolchain: stable
           profile: minimal
       - uses: Swatinem/rust-cache@v1
 
