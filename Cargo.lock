@@ -1042,7 +1042,7 @@ dependencies = [
 
 [[package]]
 name = "snapshots"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
@@ -1054,7 +1054,7 @@ dependencies = [
 
 [[package]]
 name = "snapshots-math"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "num-traits",
 ]
