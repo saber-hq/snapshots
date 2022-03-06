@@ -8,12 +8,15 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_TOOLCHAIN: nightly-2021-12-09
   NPM_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
 jobs:
   release-sdk:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix shell .#env-anchor-idls --command bash {0}
+
     name: Release SDK on NPM
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +47,7 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn install
       - name: Parse IDLs
-        run: nix shell .#ci --command yarn idl:generate
+        run: yarn idl:generate
       - run: yarn build
       - run: |
           echo 'npmAuthToken: "${NPM_AUTH_TOKEN}"' >> .yarnrc.yml
@@ -54,6 +57,10 @@ jobs:
   release-crate:
     runs-on: ubuntu-latest
     name: Release crate on crates.io
+    defaults:
+      run:
+        shell: nix shell .#env-release-crates --command bash {0}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -64,18 +71,16 @@ jobs:
           name: saber
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Install Rust nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
       - uses: Swatinem/rust-cache@v1
       - name: Publish crates
-        run: nix shell .#ci --command cargo-ws workspaces publish --from-git --yes --skip-published --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
+        run: cargo workspaces publish --from-git --yes --skip-published --token ${{ secrets.CARGO_PUBLISH_TOKEN }}
 
   release-binaries:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix shell .#env-anchor-build --command bash {0}
+
     name: Release verifiable binaries
     steps:
       - uses: actions/checkout@v3
@@ -87,7 +92,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build programs
-        run: nix shell .#ci --command anchor build --verifiable
+        run: anchor build --verifiable
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -98,6 +103,10 @@ jobs:
 
   site:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: nix shell .#env-anchor-idls --command bash {0}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -123,7 +132,7 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn install
       - name: Parse IDLs
-        run: nix shell .#ci --command yarn idl:generate
+        run: yarn idl:generate
       - run: yarn docs:generate
       - run: cp -R images/ site/
 
