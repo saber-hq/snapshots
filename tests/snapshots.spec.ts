@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { GokiSDK } from "@gokiprotocol/client";
 import { expectTX, expectTXTable } from "@saberhq/chai-solana";
 import { createMint, sleep, u64 } from "@saberhq/token-utils";
