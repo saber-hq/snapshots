@@ -68,7 +68,7 @@ impl<'info> Sync<'info> {
             let prev_period_ve_balance = escrow_history.ve_balances[period];
 
             // The current value of this period's ve balance.
-            let ve_balance: u64 = unwrap_int!(calculate_voter_power_simple(
+            let ve_balance: u64 = unwrap_int!(calculate_voter_power_for_period(
                 power_if_max_lockup,
                 period_start_ts,
                 escrow_started_at,
@@ -104,10 +104,14 @@ impl<'info> Sync<'info> {
     }
 }
 
-/// Calculates voter power using cached calculations.
+/// Calculates voter power at the start of a period.
 ///
-/// - `power_if_max_lockup`: Voting power if the lockup was at the maximum amount
-fn calculate_voter_power_simple(
+/// - `power_if_max_lockup`: Voting power if the user's lockup was at the maximum amount
+/// - `period_start_ts`: When the period started.
+/// - `escrow_started_at`: When the user's escrow started.
+/// - `escrow_ends_at`: When the user's escrow ends.
+/// - `max_stake_duration`: The maximum duration of a lockup. This is also the duration used to compute the `power_if_max_lockup`.
+fn calculate_voter_power_for_period(
     power_if_max_lockup: u64,
     period_start_ts: u64,
     escrow_started_at: u64,
@@ -150,5 +154,66 @@ impl<'info> Validate<'info> for Sync<'info> {
     fn validate(&self) -> Result<()> {
         assert_keys_eq!(self.locker, self.escrow.locker);
         Ok(())
+    }
+}
+
+#[cfg(test)]
+#[allow(clippy::unwrap_used)]
+mod test {
+    use super::*;
+    use locked_voter::LockerParams;
+    use proptest::prelude::*;
+
+    fn run_test_identical_to_locked_voter(
+        escrow_amount: u64,
+        max_stake_vote_multiplier: u8,
+        period_start_ts: i64,
+        escrow_started_at: i64,
+        escrow_ends_at: i64,
+        max_stake_duration: u64,
+    ) {
+        let reference_locker = LockerParams {
+            max_stake_duration,
+            max_stake_vote_multiplier,
+            ..Default::default()
+        };
+        let reference_escrow = Escrow {
+            amount: escrow_amount,
+            escrow_started_at,
+            escrow_ends_at,
+            ..Default::default()
+        };
+        let power_if_max_lockup = escrow_amount * (max_stake_vote_multiplier as u64);
+        let reference_power =
+            reference_locker.calculate_voter_power(&reference_escrow, period_start_ts);
+        let new_power = calculate_voter_power_for_period(
+            power_if_max_lockup,
+            period_start_ts as u64,
+            escrow_started_at as u64,
+            escrow_ends_at as u64,
+            max_stake_duration,
+        );
+        assert_eq!(reference_power, new_power);
+    }
+
+    proptest! {
+        #[test]
+        fn test_identical_to_locked_voter(
+            escrow_amount in 0..=(u64::MAX >> 8),
+            max_stake_vote_multiplier: u8,
+            period_start_ts in 0..=i64::MAX,
+            escrow_started_at in 0..=i64::MAX,
+            escrow_ends_at in 0..=i64::MAX,
+            max_stake_duration: u64,
+        ) {
+            run_test_identical_to_locked_voter(
+                escrow_amount,
+                max_stake_vote_multiplier,
+                period_start_ts,
+                escrow_started_at,
+                escrow_ends_at,
+                max_stake_duration
+            );
+        }
     }
 }
