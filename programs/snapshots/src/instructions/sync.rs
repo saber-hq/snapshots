@@ -1,7 +1,8 @@
 //! Processor for [snapshots::sync].
 
 use crate::*;
-use locked_voter::{Escrow, Locker};
+use ::u128::mul_div_u64;
+use locked_voter::{Escrow, Locker, LockerParams};
 use num_traits::ToPrimitive;
 
 /// Accounts for [snapshots::sync].
@@ -49,14 +50,17 @@ impl<'info> Sync<'info> {
             }
 
             let prev_period_ve_balance = escrow_history.ve_balances[period];
-            let ve_balance: u64 = unwrap_int!(self
-                .locker
-                .params
-                .calculate_voter_power(&self.escrow, period_start_ts));
+            let ve_balance: u64 = unwrap_int!(calculate_voter_power_v2(
+                self.locker.params,
+                &self.escrow,
+                period_start_ts
+            ));
 
-            locker_history.ve_balances[period] = unwrap_int!(locker_history.ve_balances[period]
-                .checked_sub(prev_period_ve_balance)
-                .and_then(|v| v.checked_add(ve_balance)));
+            locker_history.ve_balances[period] = unwrap_checked!({
+                locker_history.ve_balances[period]
+                    .checked_sub(prev_period_ve_balance)?
+                    .checked_add(ve_balance)
+            });
             escrow_history.ve_balances[period] = ve_balance;
 
             invariant!(ve_balance >= prev_period_ve_balance, EscrowBalanceDecreased);
@@ -71,6 +75,49 @@ impl<'info> Sync<'info> {
 
         Ok(())
     }
+}
+
+fn calculate_voter_power_v2(
+    LockerParams {
+        max_stake_duration,
+        max_stake_vote_multiplier,
+        ..
+    }: LockerParams,
+    escrow: &Escrow,
+    now: i64,
+) -> Option<u64> {
+    // invalid `now` argument, should never happen.
+    if now == 0 {
+        return None;
+    }
+    if escrow.escrow_started_at == 0 {
+        return Some(0);
+    }
+    // Lockup had zero power before the start time.
+    // at the end time, lockup also has zero power.
+    if now < escrow.escrow_started_at || now >= escrow.escrow_ends_at {
+        return Some(0);
+    }
+
+    let seconds_until_lockup_expiry = escrow.escrow_ends_at.checked_sub(now)?;
+    // elapsed seconds, clamped to the maximum duration
+    let relevant_seconds_until_lockup_expiry = seconds_until_lockup_expiry
+        .to_u64()?
+        .min(max_stake_duration);
+
+    // voting power at max lockup
+    let power_if_max_lockup = escrow
+        .amount
+        .checked_mul((max_stake_vote_multiplier).into())?;
+
+    // multiply the max lockup power by the fraction of the max stake duration
+    let power = mul_div_u64(
+        power_if_max_lockup,
+        relevant_seconds_until_lockup_expiry,
+        max_stake_duration,
+    )?;
+
+    Some(power)
 }
 
 pub fn handler(ctx: Context<Sync>) -> Result<()> {
