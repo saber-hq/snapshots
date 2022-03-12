@@ -1,6 +1,6 @@
 {
   "name": "@saberhq/snapshots",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "The TypeScript SDK for the Saber Voting Escrow Snapshot system.",
   "keywords": [
     "solana",
