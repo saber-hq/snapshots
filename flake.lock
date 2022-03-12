@@ -60,11 +60,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1646533330,
-        "narHash": "sha256-JwtPZekfbIwUFO5xza9sDHOxKsT5E2PFBkJxtvNOI7M=",
+        "lastModified": 1646706102,
+        "narHash": "sha256-zDAbxoLGzM5mhd9aYjXpeA9i9JU80OOq1FYynoYIugI=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "1a459694c46b984f4f55bfe4a59d874c828fb1e8",
+        "rev": "3950dc50f50fa2767f36281f3e61f06610707735",
         "type": "github"
       },
       "original": {
@@ -80,11 +80,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1646590990,
-        "narHash": "sha256-yU0mhxIEoF1hAk1FXAtBvwNPD6A5bxkmsTHtjpNiA3E=",
+        "lastModified": 1646726219,
+        "narHash": "sha256-HIOmo0aMz+/arG4OcLDKpBL/BICJfd5TkPdFS0K18pA=",
         "owner": "saber-hq",
         "repo": "saber-overlay",
-        "rev": "2724ce6bc2237c185c5c1058570591c022448d8f",
+        "rev": "0e37d08bb01c3b5204eb35e1a766fd0ad74dc69e",
         "type": "github"
       },
       "original": {

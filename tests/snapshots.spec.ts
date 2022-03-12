@@ -20,7 +20,7 @@ import {
 } from "../src/wrappers/snapshots/pda";
 import { createUser, makeSDK } from "./workspace";
 
-export const INITIAL_MINT_AMOUNT = new u64(1_000_000_000);
+export const INITIAL_MINT_AMOUNT = new u64(1_000_000_000000);
 
 describe("Locked Voter", () => {
   const sdk = makeSDK();

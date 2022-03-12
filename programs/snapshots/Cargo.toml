@@ -26,4 +26,8 @@ anchor-spl = "^0.22"
 locked-voter = { version = "^0.5", features = ["cpi"] }
 num-traits = "0.2"
 snapshots-math = { version = "^0.2", path = "./math" }
+u128 = "0.1.0"
 vipers = "^2.0"
+
+[dev-dependencies]
+proptest = "1.0.0"

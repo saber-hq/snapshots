@@ -8,7 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  SOLANA_VERSION: "1.8.16"
+  SOLANA_VERSION: "1.9.9"
 
 jobs:
   sdk:
@@ -34,8 +34,6 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v3
-        with:
-          always-auth: true
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path

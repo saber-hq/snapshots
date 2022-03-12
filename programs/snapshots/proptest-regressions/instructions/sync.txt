@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 84e80908539ba4551b8966eff390a4af356025617c8edf3bb938f9c6ff404adc # shrinks to power_if_max_lockup = 6, period_start_ts = 3365836746710489934, escrow_started_at = 1, escrow_ends_at = 5124745715660478989, max_stake_duration = 0
+cc f1b29dd69c418547f61b0793db71abbc0055fc69b5df070b2542ca30483733c4 # shrinks to escrow_amount = 1, max_stake_vote_multiplier = 9, period_start_ts = 496038611235145017, escrow_started_at = 1, escrow_ends_at = 1266256638931745117, max_stake_duration = 0
