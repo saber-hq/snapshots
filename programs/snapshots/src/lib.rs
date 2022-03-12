@@ -65,12 +65,6 @@ pub mod snapshots {
     pub fn sync(ctx: Context<Sync>) -> Result<()> {
         sync::handler(ctx)
     }
-
-    /// Synchronize an [locked_voter::Escrow] with the [LockerHistory]/[EscrowHistory].
-    #[access_control(ctx.accounts.validate())]
-    pub fn sync_range(ctx: Context<Sync>) -> Result<()> {
-        sync::handler(ctx)
-    }
 }
 
 /// Errors.
