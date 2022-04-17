@@ -1,4 +1,5 @@
 import * as anchor from "@project-serum/anchor";
+import { AnchorProvider } from "@project-serum/anchor";
 import { makeSaberProvider } from "@saberhq/anchor-contrib";
 import { chaiSolana, expectTX } from "@saberhq/chai-solana";
 import type { Provider } from "@saberhq/solana-contrib";
@@ -26,7 +27,7 @@ chai.use(chaiSolana);
 export type Workspace = SnapshotsPrograms;
 
 export const makeSDK = (): SnapshotsSDK => {
-  const anchorProvider = anchor.Provider.env();
+  const anchorProvider = AnchorProvider.env();
   anchor.setProvider(anchorProvider);
   const provider = makeSaberProvider(anchorProvider);
   return SnapshotsSDK.load({

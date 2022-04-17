@@ -19,6 +19,7 @@ pub struct CreateLockerHistory<'info> {
             era.to_le_bytes().as_ref()
         ],
         bump,
+        space = 8 + LockerHistory::LEN,
         payer = payer
     )]
     pub locker_history: AccountLoader<'info, LockerHistory>,
