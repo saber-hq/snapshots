@@ -21,8 +21,8 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = "^0.22"
-anchor-spl = "^0.22"
+anchor-lang = ">=0.22, <=0.24"
+anchor-spl = ">=0.22, <=0.24"
 locked-voter = { version = "^0.5", features = ["cpi"] }
 num-traits = "0.2"
 snapshots-math = { version = "^0.2", path = "./math" }

@@ -1,5 +1,7 @@
 //! Struct definitions for accounts that hold state.
 
+use anchor_lang::solana_program::pubkey::PUBKEY_BYTES;
+
 use crate::*;
 
 /// Stores the total number of veTokens in circulation for each period.
@@ -37,6 +39,11 @@ impl Default for LockerHistory {
     }
 }
 
+impl LockerHistory {
+    /// Number of bytes in a serialized [LockerHistory],
+    pub const LEN: usize = PUBKEY_BYTES + 2 + 1 + 5 + 8 * 256 + 8 * 256;
+}
+
 /// Stores the total veToken balance of an [locked_voter::Escrow]
 /// for the given epochs.
 ///
@@ -66,5 +73,26 @@ impl Default for EscrowHistory {
             _padding: Default::default(),
             ve_balances: [0; ERA_NUM_PERIODS],
         }
+    }
+}
+
+impl EscrowHistory {
+    /// Number of bytes in a serialized [LockerHistory],
+    pub const LEN: usize = PUBKEY_BYTES + 2 + 1 + 5 + 8 * 256;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::mem::size_of;
+
+    #[test]
+    fn test_locker_history_len() {
+        assert_eq!(size_of::<LockerHistory>(), LockerHistory::LEN);
+    }
+
+    #[test]
+    fn test_escrow_history_len() {
+        assert_eq!(size_of::<EscrowHistory>(), EscrowHistory::LEN);
     }
 }

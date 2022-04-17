@@ -10,7 +10,7 @@ pub struct CreateEscrowHistory<'info> {
     /// The [Escrow].
     pub escrow: Account<'info, Escrow>,
 
-    /// The [LockerHistory] to be created.
+    /// The [EscrowHistory] to be created.
     #[account(
         init,
         seeds = [
@@ -19,6 +19,7 @@ pub struct CreateEscrowHistory<'info> {
             era.to_le_bytes().as_ref()
         ],
         bump,
+        space = 8 + EscrowHistory::LEN,
         payer = payer
     )]
     pub escrow_history: AccountLoader<'info, EscrowHistory>,
